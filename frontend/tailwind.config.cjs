@@ -1,0 +1,1 @@
+module.exports = { content: ['./index.html','./src/**/*.{js,jsx,ts,tsx}'], theme: { extend: { colors: { brand: { DEFAULT: '#ff6600', dark: '#cc5200' } } } }, plugins: [] }

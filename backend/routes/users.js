@@ -1,0 +1,3 @@
+const express = require('express'); const router = express.Router(); const db = require('../db'); const jwt = require('jsonwebtoken'); const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret'; function auth(req,res,next){ const h = req.headers.authorization; if(!h) return res.status(401).json({ error: 'No token' }); const token = h.split(' ')[1]; try{ req.user = jwt.verify(token, JWT_SECRET); next(); } catch(e){ res.status(401).json({ error: 'Invalid token' }); } }
+router.get('/me', auth, (req,res)=>{ const u = db.prepare('SELECT id,name,email,role FROM users WHERE id=?').get(req.user.id); res.json(u); });
+module.exports = router;

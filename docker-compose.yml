@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  api:
+    build: ./backend
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./backend/data:/app/data
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=supersecret_dev_key
+    depends_on:
+      - wallet
+      - payment
+  web:
+    build: ./frontend
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_BASE=http://localhost:5000/api
+    depends_on:
+      - api
+  payment:
+    build: ./payment-mock
+    ports:
+      - '4001:4001'
+  wallet:
+    build: ./wallet
+    ports:
+      - '4100:4100'
