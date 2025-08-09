@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 function run(sql){ db.prepare(sql).run(); }
 
 // Drop for idempotence
+run(`DROP TABLE IF EXISTS cart_items`);
 run(`DROP TABLE IF EXISTS order_items`);
 run(`DROP TABLE IF EXISTS orders`);
 run(`DROP TABLE IF EXISTS products`);
@@ -13,6 +14,7 @@ run(`DROP TABLE IF EXISTS users`);
 run(`CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT UNIQUE, password TEXT, role TEXT)`);
 run(`CREATE TABLE suppliers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, contact TEXT)`);
 run(`CREATE TABLE products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price_cents INTEGER, stock INTEGER, supplier_id INTEGER, image_url TEXT, FOREIGN KEY (supplier_id) REFERENCES suppliers(id))`);
+run(`CREATE TABLE cart_items (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, user_id INTEGER, product_id INTEGER, qty INTEGER, created_at TEXT, FOREIGN KEY(user_id) REFERENCES users(id), FOREIGN KEY(product_id) REFERENCES products(id))`);
 run(`CREATE TABLE orders (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, total_cents INTEGER, created_at TEXT, FOREIGN KEY(user_id) REFERENCES users(id))`);
 run(`CREATE TABLE order_items (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id INTEGER, product_id INTEGER, qty INTEGER, unit_price_cents INTEGER, FOREIGN KEY(order_id) REFERENCES orders(id), FOREIGN KEY(product_id) REFERENCES products(id))`);
 

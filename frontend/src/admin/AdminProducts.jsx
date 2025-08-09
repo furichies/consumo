@@ -1,29 +1,107 @@
-import React,{useState,useEffect} from 'react'
-import { getProducts, getProviders } from '../api'
-export default function AdminProducts(){
-  const [suppliers,setSuppliers]=useState([])
-  const [products,setProducts]=useState([])
-  const [form,setForm]=useState({ name:'', category:'verdura', price_cents:0, stock:0, supplier_id:'', image_url:'' })
+import React, { useState, useEffect } from 'react'
+import { getProducts, getProviders, createProduct, updateProduct, deleteProduct } from '../api'
+
+export default function AdminProducts() {
+  const [suppliers, setSuppliers] = useState([])
+  const [products, setProducts] = useState([])
+  const [form, setForm] = useState({ name: '', category: 'verdura', price_cents: 0, stock: 0, supplier_id: '', image_url: '' })
   const [editing, setEditing] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  useEffect(()=>{ async function f(){ setSuppliers(await getProviders()); setProducts(await getProducts()); } f() },[])
+  useEffect(() => {
+    loadData()
+  }, [])
 
-  async function create(){ await fetch((import.meta.env.VITE_API_BASE||'http://localhost:5000/api') + '/products', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(form) }); setForm({ name:'', category:'verdura', price_cents:0, stock:0, supplier_id:'', image_url:'' }); setProducts(await getProducts()) }
-
-  function startEdit(p){ setEditing({ ...p }) }
-  async function saveEdit(){
-    await fetch((import.meta.env.VITE_API_BASE||'http://localhost:5000/api') + '/products/' + editing.id, { method:'PUT', headers:{'content-type':'application/json'}, body: JSON.stringify(editing) });
-    setEditing(null);
-    setProducts(await getProducts());
+  async function loadData() {
+    try {
+      setError(null)
+      const [suppliersData, productsData] = await Promise.all([
+        getProviders(),
+        getProducts()
+      ])
+      setSuppliers(suppliersData)
+      setProducts(productsData)
+    } catch (err) {
+      setError('Error cargando datos: ' + err.message)
+    }
   }
-  async function remove(id){
-    if(!confirm('¿Borrar producto?')) return;
-    await fetch((import.meta.env.VITE_API_BASE||'http://localhost:5000/api') + '/products/' + id, { method: 'DELETE' });
-    setProducts(await getProducts());
+
+  async function create() {
+    if (!form.name || !form.supplier_id || form.price_cents <= 0) {
+      alert('Por favor complete todos los campos requeridos')
+      return
+    }
+
+    try {
+      setLoading(true)
+      setError(null)
+      await createProduct({
+        ...form,
+        supplier_id: parseInt(form.supplier_id),
+        price_cents: parseInt(form.price_cents),
+        stock: parseInt(form.stock)
+      })
+      setForm({ name: '', category: 'verdura', price_cents: 0, stock: 0, supplier_id: '', image_url: '' })
+      await loadData()
+      alert('Producto creado exitosamente')
+    } catch (err) {
+      setError('Error creando producto: ' + err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function startEdit(p) { 
+    setEditing({ ...p }) 
+  }
+  
+  async function saveEdit() {
+    if (!editing.name || !editing.supplier_id || editing.price_cents <= 0) {
+      alert('Por favor complete todos los campos requeridos')
+      return
+    }
+
+    try {
+      setLoading(true)
+      setError(null)
+      await updateProduct(editing.id, {
+        ...editing,
+        supplier_id: parseInt(editing.supplier_id),
+        price_cents: parseInt(editing.price_cents),
+        stock: parseInt(editing.stock)
+      })
+      setEditing(null)
+      await loadData()
+      alert('Producto actualizado exitosamente')
+    } catch (err) {
+      setError('Error actualizando producto: ' + err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
+  async function remove(id) {
+    if (!confirm('¿Borrar producto?')) return
+
+    try {
+      setLoading(true)
+      setError(null)
+      await deleteProduct(id)
+      await loadData()
+      alert('Producto eliminado exitosamente')
+    } catch (err) {
+      setError('Error eliminando producto: ' + err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (<div className='p-4 border rounded'>
     <h3 className='font-semibold'>Productos</h3>
+    
+    {error && <div className='mt-2 p-2 bg-red-100 border border-red-300 text-red-700 rounded'>{error}</div>}
+    
     <div className='mt-2 space-y-2'>
       <input className='w-full p-2 border rounded' placeholder='Nombre' value={form.name} onChange={e=>setForm({...form,name:e.target.value})} />
       <select className='w-full p-2 border rounded' value={form.supplier_id} onChange={e=>setForm({...form,supplier_id: parseInt(e.target.value)})}>
