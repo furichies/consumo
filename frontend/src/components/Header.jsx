@@ -14,7 +14,10 @@ export default function Header({ onNavigate, user, onLogout, cartCount = 0 }) {
         <div className='flex items-center justify-between h-16'>
           {/* Logo y Título */}
           <div className='flex items-center space-x-4'>
-            <div className='flex items-center space-x-3'>
+            <button 
+              onClick={() => handleNavClick('about')} 
+              className='flex items-center space-x-3 hover:opacity-80 transition-opacity'
+            >
               <div className='w-10 h-10 bg-white rounded-full flex items-center justify-center'>
                 <span className='text-green-600 font-bold text-xl'>C</span>
               </div>
@@ -22,7 +25,7 @@ export default function Header({ onNavigate, user, onLogout, cartCount = 0 }) {
                 <h1 className='text-xl font-bold'>Consumo Local</h1>
                 <p className='text-green-100 text-xs hidden sm:block'>Agrupación de Compras</p>
               </div>
-            </div>
+            </button>
           </div>
 
           {/* Navegación Desktop */}

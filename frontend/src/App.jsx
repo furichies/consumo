@@ -4,6 +4,7 @@ import Shop from './pages/Shop'
 import Cart from './pages/Cart'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
+import About from './pages/About'
 import { getCurrentUser, getCart } from './api'
 
 export default function App() {
@@ -90,6 +91,9 @@ export default function App() {
         {route === 'admin' && (
           <Admin user={user} />
         )}
+        {route === 'about' && (
+          <About />
+        )}
       </main>
       
       {/* Footer */}
@@ -108,6 +112,7 @@ export default function App() {
               <ul className='space-y-2 text-sm text-green-200'>
                 <li><button onClick={() => setRoute('shop')} className='hover:text-white'>Tienda</button></li>
                 <li><button onClick={() => setRoute('cart')} className='hover:text-white'>Mi Carrito</button></li>
+                <li><button onClick={() => setRoute('about')} className='hover:text-white'>¿Por qué consumo local?</button></li>
                 {!user && <li><button onClick={() => setRoute('login')} className='hover:text-white'>Iniciar Sesión</button></li>}
                 {user?.role === 'admin' && <li><button onClick={() => setRoute('admin')} className='hover:text-white'>Administración</button></li>}
               </ul>

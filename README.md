@@ -400,6 +400,22 @@ POST /api/orders/checkout
 
 ---
 
+## 📄 Licencia
+
+Este proyecto está licenciado bajo la **GNU General Public License v3.0 (GPLv3)**.
+
+Esto significa que:
+- ✅ Puedes usar el software para cualquier propósito
+- ✅ Puedes estudiar y modificar el código fuente
+- ✅ Puedes redistribuir copias del software
+- ✅ Puedes distribuir versiones modificadas
+- ⚠️ **Todas las obras derivadas deben mantener la misma licencia GPLv3**
+- ⚠️ **Debes incluir el código fuente al distribuir**
+
+**📋 Texto completo de la licencia:** [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html)
+
+---
+
 **💡 ¿Preguntas o problemas?** Abre un issue en GitHub o revisa la documentación de la API.
 
 **🚀 ¡Happy Coding!**

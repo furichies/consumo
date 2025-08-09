@@ -1,10 +1,31 @@
 const API = (import.meta.env.VITE_API_BASE) ? import.meta.env.VITE_API_BASE : 'http://localhost:5000/api'
 
+// Función para obtener o crear un session ID único
+function getSessionId() {
+  let sessionId = localStorage.getItem('sessionId')
+  if (!sessionId) {
+    sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+    localStorage.setItem('sessionId', sessionId)
+  }
+  return sessionId
+}
+
 // Función helper para obtener headers con autenticación
 function getAuthHeaders() {
   const token = localStorage.getItem('token')
   return {
     'content-type': 'application/json',
+    ...(token && { 'authorization': `Bearer ${token}` })
+  }
+}
+
+// Función helper para obtener headers del carrito (incluye session ID)
+function getCartHeaders() {
+  const token = localStorage.getItem('token')
+  const sessionId = getSessionId()
+  return {
+    'content-type': 'application/json',
+    'X-Session-Id': sessionId,
     ...(token && { 'authorization': `Bearer ${token}` })
   }
 }
@@ -67,7 +88,7 @@ export async function getProviders() {
 export async function postCart(item) {
   const response = await fetch(`${API}/cart`, {
     method: 'POST',
-    headers: getAuthHeaders(),
+    headers: getCartHeaders(),
     body: JSON.stringify(item)
   })
   return handleResponse(response)
@@ -75,7 +96,7 @@ export async function postCart(item) {
 
 export async function getCart() {
   const response = await fetch(`${API}/cart`, {
-    headers: getAuthHeaders()
+    headers: getCartHeaders()
   })
   return handleResponse(response)
 }
@@ -83,7 +104,7 @@ export async function getCart() {
 export async function clearCart() {
   const response = await fetch(`${API}/cart/clear`, {
     method: 'POST',
-    headers: getAuthHeaders()
+    headers: getCartHeaders()
   })
   return handleResponse(response)
 }
