@@ -1,1 +1,151 @@
-@tailwind base; @tailwind components; @tailwind utilities; :root{ --brand:#ff6600; --brand-dark:#cc5200 } .brand-btn{ background:linear-gradient(90deg,var(--brand),var(--brand-dark)); color:white } .app-container{ max-width:1100px; margin:0 auto }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables CSS personalizadas */
+:root {
+  --brand: #059669; /* Green-600 */
+  --brand-dark: #047857; /* Green-700 */
+  --brand-light: #10b981; /* Green-500 */
+}
+
+/* Componentes personalizados */
+@layer components {
+  .brand-btn {
+    @apply bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200;
+  }
+  
+  .app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  /* Estilos para truncar texto */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Animaciones personalizadas */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-bounce-soft {
+    animation: bounceSoft 2s infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceSoft {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+  60% {
+    transform: translateY(-1px);
+  }
+}
+
+/* Mejoras de accesibilidad */
+.focus\:outline-green {
+  @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2;
+}
+
+/* Estilos para formularios */
+.form-input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-2;
+}
+
+/* Estilos para cards */
+.card {
+  @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+}
+
+.card-elevated {
+  @apply bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1;
+}
+
+/* Estilos para botones de estado */
+.btn-success {
+  @apply bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+}
+
+.btn-danger {
+  @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+}
+
+.btn-warning {
+  @apply bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+}
+
+/* Estilos responsive mejorados */
+@media (max-width: 640px) {
+  .app-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Mejoras para el scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Estilos personalizados para el loading */
+.loading-spinner {
+  @apply animate-spin rounded-full border-b-2 border-green-600;
+}

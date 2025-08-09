@@ -29,17 +29,18 @@ const s1 = db.prepare('INSERT INTO suppliers (name,contact) VALUES (?,?)').run('
 const s2 = db.prepare('INSERT INTO suppliers (name,contact) VALUES (?,?)').run('Lácteos del Norte','lacteos@example.com').lastInsertRowid;
 const s3 = db.prepare('INSERT INTO suppliers (name,contact) VALUES (?,?)').run('Carnes Premium','carnes@example.com').lastInsertRowid;
 
-// Products (fixed images - picsum seeds)
+// Products (using local images)
 const p = db.prepare('INSERT INTO products (name,category,price_cents,stock,supplier_id,image_url) VALUES (?,?,?,?,?,?)');
-p.run('Lechuga romana','verdura',120,50,s1,'https://picsum.photos/seed/lettuce1/800/600');
-p.run('Tomate rama','verdura',200,40,s1,'https://picsum.photos/seed/tomato1/800/600');
-p.run('Zanahoria bolsa 1kg','verdura',150,60,s1,'https://picsum.photos/seed/carrot1/800/600');
-p.run('Leche entera 1L','lacteo',90,100,s2,'https://picsum.photos/seed/milk1/800/600');
-p.run('Yogur natural 4x125g','lacteo',250,80,s2,'https://picsum.photos/seed/yogurt1/800/600');
-p.run('Queso fresco 300g','lacteo',320,35,s2,'https://picsum.photos/seed/cheese1/800/600');
-p.run('Pollo entero','carne',650,20,s3,'https://picsum.photos/seed/chicken1/800/600');
-p.run('Filete ternera 500g','carne',1200,15,s3,'https://picsum.photos/seed/beef1/800/600');
-p.run('Chorizo artesano 300g','carne',450,25,s3,'https://picsum.photos/seed/chorizo1/800/600');
+p.run('Lechuga romana','verdura',120,50,s1,'/imgs/lechuga_romana.png');
+p.run('Tomate rama','verdura',200,40,s1,'/imgs/tomate_rama.png');
+p.run('Zanahoria bolsa 1kg','verdura',150,60,s1,'/imgs/Zanahoria_bolsa_1kg.png');
+p.run('Leche entera 1L','lacteo',90,100,s2,'/imgs/Leche_entera_1L .png');
+p.run('Yogur natural 4x125g','lacteo',250,80,s2,'/imgs/Yogur_natural_4x125g.png');
+p.run('Queso fresco 300g','lacteo',320,35,s2,'/imgs/Queso_fresco_300g.png');
+p.run('Pollo entero','carne',650,20,s3,'/imgs/Pollo_entero.png');
+p.run('Filete ternera 500g','carne',1200,15,s3,'/imgs/Filete_ternera_500g.png');
+p.run('Chorizo artesano 300g','carne',450,25,s3,'/imgs/Chorizo_artesano_300g.png');
+p.run('Bollo de nata','panaderia',180,30,s1,'/imgs/bollo_nata.png');
 
 // Sample orders
 const now = new Date().toISOString();

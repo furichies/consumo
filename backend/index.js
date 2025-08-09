@@ -20,6 +20,9 @@ app.use(cors({
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// Servir imágenes estáticas
+app.use('/imgs', express.static('../frontend/imgs'));
+
 app.use('/api/auth', auth);
 app.use('/api/users', users);
 app.use('/api/suppliers', suppliers);
